@@ -3,9 +3,9 @@ require "test_helper"
 
 describe "count" do
 	it "counts a single word when the phrase is a single word" do
-		phrase = "Hello"
+		phrase = "hello"
 		count = Count.new
-		hash = Hash.new
+		hash = CaselessHash.new
 		hash[phrase] = 1
 		count.word_frequency(phrase).must_equal hash
 	end
@@ -13,7 +13,7 @@ describe "count" do
 	it "takes a two word phrase" do
 		phrase = "Hello world"
 		count = Count.new
-		count.word_frequency(phrase)["Hello"].must_equal 1
+		count.word_frequency(phrase)["hello"].must_equal 1
 	end
 
 	it "takes a phrase of the same words" do
@@ -25,7 +25,7 @@ describe "count" do
 	it "punctuation doesn't matter" do
 		phrase = "Hello, Hello"
 		count = Count.new
-		count.word_frequency(phrase)["Hello"].must_equal 2
+		count.word_frequency(phrase)["HeLlo"].must_equal 2
 	end
 
 	it "passes with the test phrase" do
@@ -45,8 +45,15 @@ describe "Phrase frequency" do
 	it "counts a single word phrase" do
 		phrase = ("Hello Hello")
 		count = Count.new
-		count.phrase_frequency(phrase)["Hello Hello"].must_equal 1
+		count.phrase_frequency(phrase)["hello hello"].must_equal 1
 	end
+
+	it "counts a single word phrase" do
+		phrase = ("Hello Hello Hello Hello")
+		count = Count.new
+		count.phrase_frequency(phrase)["hello hello"].must_equal 3
+	end
+
 	it "works with the example" do
 		phrase = ("I like pie")
 		count = Count.new

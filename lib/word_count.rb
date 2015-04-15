@@ -1,20 +1,31 @@
-class Count
- def word_frequency(phrase)
-	words = phrase.gsub(/[^\s\w']+|'(?!\w)|(?<!\w)'/, '').split(' ')
-	count = Hash.new
-	(0...words.length).each do |i|
-		if count[words[i]] != nil ? count[words[i]] += 1 : count[words[i]] = 1
-		end
+# Modify Hash Class
+class CaselessHash < Hash
+	def [](key)
+		key.respond_to?(:upcase) ? super(key.upcase) : super(key)
 	end
-	count
- end
+
+	def []=(key, value)
+		key.respond_to?(:upcase) ? super(key.upcase, value) : super(key, value)
+	end
+end
+
+
+class Count
+	def word_frequency(phrase)
+		words = phrase.downcase.gsub(/[^\s\w']+|'(?!\w)|(?<!\w)'/, '').split(' ')
+		word_count = CaselessHash.new
+		words.each do |word|
+			word_count[word] = word_count[word].to_i + 1
+		end
+	word_count
+	end
 
 	def phrase_frequency(phrase)
-		words = phrase.gsub(/[^\s\w']+|'(?!\w)|(?<!\w)'/, '').split(' ')
-		phrase_count = Hash.new
+		words = phrase.downcase.gsub(/[^\s\w']+|'(?!\w)|(?<!\w)'/, '').split(' ')
+		phrase_count = CaselessHash.new
 		words.each_cons(2) do |a|
-			if phrase_count[a.join(" ")] != nil ? phrase_count[a.join(" ")] += 1 : phrase_count[a.join(" ")] = 1
-			end
+			words_string = a.join ' '
+			phrase_count[words_string] = phrase_count[words_string].to_i + 1
 		end
 	phrase_count
 	end
