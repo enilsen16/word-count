@@ -40,3 +40,28 @@ describe "count" do
 		count.word_frequency(phrase)["favorite"].must_equal 1
 	end
 end
+
+describe "Phrase frequency" do
+	it "counts a single word phrase" do
+		phrase = ("Hello Hello")
+		count = Count.new
+		count.phrase_frequency(phrase)["Hello Hello"].must_equal 1
+	end
+	it "works with the example" do
+		phrase = ("I like pie")
+		count = Count.new
+		count.phrase_frequency(phrase)["like pie"].must_equal 1
+	end
+
+	it "passes with the test phrase" do
+		phrase = File.read("./test/fixtures/phrase.txt")
+		count = Count.new
+		count.phrase_frequency(phrase)["to week"].must_equal 1
+	end
+
+	it "real snapchat app review" do
+		phrase = File.read("./test/fixtures/review.txt")
+		count = Count.new
+		count.phrase_frequency(phrase)["favorite app"].must_equal 1
+	end
+end
